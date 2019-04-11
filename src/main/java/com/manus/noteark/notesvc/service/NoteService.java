@@ -1,7 +1,7 @@
 package com.manus.noteark.notesvc.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import com.manus.noteark.notesvc.exception.NotFoundException;
 import com.manus.noteark.notesvc.pojo.Note;
@@ -18,24 +18,20 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-
     public Note createNote(Note note) {
         return noteRepository.save(note);
     }
 
-    public Note updateNote(String noteId, Note newNote) {
-        newNote.setId(noteId);
-        return noteRepository.save(newNote);
+    public Note updateNoteWithId(String noteId, Note note) {
+        return noteRepository.updateById(noteId, note).get();
     }
 
-    public Note getNoteById(String noteId) {
-        Note note; 
-        try {
-            note = noteRepository.findById(noteId).get();
-        } catch(NoSuchElementException e) {
-            throw new NotFoundException(String.format("note with id \"%s\"", noteId));
-        }
-        return note;
+    public Note getNoteById(String noteId) {      
+        Optional<Note> result = noteRepository.findById(noteId);
+        if(!result.isPresent()) {
+            throw new NotFoundException(String.format("\"note\" with id \"%s\"", noteId)); 
+        } 
+        return result.get();
     }
 
     public List<Note> getAllNotesForOwner(String owner) {

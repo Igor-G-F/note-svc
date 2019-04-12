@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/note")
+@RequestMapping(value="/note", produces={"application/json"})
 public class NoteController {
 
     private final NoteService noteService;
@@ -43,5 +43,5 @@ public class NoteController {
     public Note getNoteById(@PathVariable String noteId) {
         return noteService.getNoteById(noteId);
     }
-    
+
 }

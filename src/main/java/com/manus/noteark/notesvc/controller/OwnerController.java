@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/owner")
+@RequestMapping(value="/owner", produces={"application/json"})
 public class OwnerController {
 
     private final NoteService noteService;

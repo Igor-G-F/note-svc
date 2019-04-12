@@ -23,11 +23,11 @@ public class NoteService {
     }
 
     public Note updateNoteWithId(String noteId, Note note) {
-        return noteRepository.updateById(noteId, note).get();
+        return noteRepository.updateByNoteId(noteId, note).get();
     }
 
     public Note getNoteById(String noteId) {      
-        Optional<Note> result = noteRepository.findById(noteId);
+        Optional<Note> result = noteRepository.findByNoteId(noteId);
         if(!result.isPresent()) {
             throw new NotFoundException(String.format("\"note\" with id \"%s\"", noteId)); 
         } 

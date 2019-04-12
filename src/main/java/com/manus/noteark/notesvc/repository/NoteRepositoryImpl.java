@@ -16,7 +16,7 @@ public class NoteRepositoryImpl implements NoteRepositoryCustom {
     }
 
     @Override
-    public Optional<Note> findById(String id) {
+    public Optional<Note> findByNoteId(String id) {
         Note result = mongoTemplate.findById(id, Note.class);
         if(Objects.isNull(result)) {
             return Optional.empty();
@@ -25,8 +25,8 @@ public class NoteRepositoryImpl implements NoteRepositoryCustom {
     }
 
     @Override
-    public Optional<Note> updateById(String id, Note note) {
-        if (findById(id).isPresent()) {
+    public Optional<Note> updateByNoteId(String id, Note note) {
+        if (findByNoteId(id).isPresent()) {
             note.setId(id);
             return Optional.of(mongoTemplate.save(note));
         } else {

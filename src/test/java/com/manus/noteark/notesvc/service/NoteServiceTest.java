@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.manus.noteark.notesvc.AbstractTest;
 import com.manus.noteark.notesvc.exception.NotFoundException;
 import com.manus.noteark.notesvc.pojo.Note;
 import com.manus.noteark.notesvc.repository.NoteRepository;
@@ -22,7 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-public class NoteServiceTest {
+public class NoteServiceTest extends AbstractTest{
 
     @InjectMocks
     private NoteService noteService;
@@ -38,7 +39,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void createNoteTest_ReturnsCreatedNote() {
+    public void createNoteTest_returnsCreatedNote() {
         Note requestNote = makeNote();
         Note createdNote = makeNote();
         createdNote.setId("1234");
@@ -50,48 +51,48 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void updateNoteWithIdTest_NoteExists_ReturnsUpdatedNote() {
+    public void updateNoteWithIdTest_noteExists_returnsUpdatedNote() {
         String updateTargetId = "1234";
         Note requestNote = makeNote();
         Note updatedNote = makeNote();
         updatedNote.setId("1234");
 
-        when(noteRepositoryMock.updateById(updateTargetId, requestNote))
+        when(noteRepositoryMock.updateByNoteId(updateTargetId, requestNote))
             .thenReturn(Optional.of(updatedNote));
 
         assertEquals(updatedNote, noteService.updateNoteWithId(updateTargetId, requestNote));
     }
 
     @Test
-    public void updateNoteWithIdTest_NoteDoesNotExist_ReturnsNewNote() {
+    public void updateNoteWithIdTest_noteDoesNotExist_returnsNewNote() {
         String updateTargetId = "2345";
         Note requestNote = makeNote();
         Note updatedNote = makeNote();
         updatedNote.setId("1234");
 
-        when(noteRepositoryMock.updateById(updateTargetId, requestNote))
+        when(noteRepositoryMock.updateByNoteId(updateTargetId, requestNote))
             .thenReturn(Optional.of(updatedNote));
 
         assertEquals(updatedNote, noteService.updateNoteWithId(updateTargetId, requestNote));
     }
 
     @Test
-    public void getNoteByIdTest_NoteFound_ReturnsNote() {      
+    public void getNoteByIdTest_noteFound_returnsNote() {      
         String noteId = "1234";
         Note foundNote = makeNote();
         foundNote.setId(noteId);
 
-        when(noteRepositoryMock.findById(noteId))
+        when(noteRepositoryMock.findByNoteId(noteId))
             .thenReturn(Optional.of(foundNote));
 
         assertEquals(foundNote, noteService.getNoteById(noteId));
     }
 
     @Test
-    public void getNoteByIdTest_NoteNotFound_ThrowsException() {      
+    public void getNoteByIdTest_noteNotFound_throwsException() {      
         String noteId = "1234";
 
-        when(noteRepositoryMock.findById(noteId))
+        when(noteRepositoryMock.findByNoteId(noteId))
             .thenReturn(Optional.empty());
 
         expectedException.expect(NotFoundException.class);
@@ -101,7 +102,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void getAllNotesForOwnerTest_HasNotes_ReturnsNotes() {
+    public void getAllNotesForOwnerTest_hasNotes_returnsNotes() {
         String noteOwner = "1234";
         List<Note> notes = new ArrayList<>();
         notes.add(makeNote());
@@ -114,7 +115,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void getAllNotesForOwnerTest_HasNoNotes_ReturnsEmptyList() {
+    public void getAllNotesForOwnerTest_hasNoNotes_returnsEmptyList() {
         String noteOwner = "1234";
         List<Note> notes = new ArrayList<>();
 
@@ -123,14 +124,4 @@ public class NoteServiceTest {
 
         assertEquals(notes, noteService.getAllNotesForOwner(noteOwner));
     }
-
-    private Note makeNote() {
-        Note result = new Note();
-        result.setId(null);
-        result.setOwner("5678");
-        result.setTitle("Test title");
-        result.setContent("Test content");
-        return result;
-    }
-
 }

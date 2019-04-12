@@ -6,8 +6,8 @@ import com.manus.noteark.notesvc.pojo.Note;
 
 public interface NoteRepositoryCustom {
 
-    public Optional<Note> findById(String id);
+    public Optional<Note> findByNoteId(String id);
 
-    public Optional<Note> updateById(String id, Note note);
+    public Optional<Note> updateByNoteId(String id, Note note);
 
 }

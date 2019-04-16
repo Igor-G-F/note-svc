@@ -40,8 +40,8 @@ public class NoteServiceTest extends AbstractTest{
 
     @Test
     public void createNoteTest_returnsCreatedNote() {
-        Note requestNote = makeNote();
-        Note createdNote = makeNote();
+        Note requestNote = testDataMaker.makeNote();
+        Note createdNote = testDataMaker.makeNote();
         createdNote.setId("1234");
 
         when(noteRepositoryMock.save(requestNote))
@@ -53,8 +53,8 @@ public class NoteServiceTest extends AbstractTest{
     @Test
     public void updateNoteWithIdTest_noteExists_returnsUpdatedNote() {
         String updateTargetId = "1234";
-        Note requestNote = makeNote();
-        Note updatedNote = makeNote();
+        Note requestNote = testDataMaker.makeNote();
+        Note updatedNote = testDataMaker.makeNote();
         updatedNote.setId("1234");
 
         when(noteRepositoryMock.updateByNoteId(updateTargetId, requestNote))
@@ -66,8 +66,8 @@ public class NoteServiceTest extends AbstractTest{
     @Test
     public void updateNoteWithIdTest_noteDoesNotExist_returnsNewNote() {
         String updateTargetId = "2345";
-        Note requestNote = makeNote();
-        Note updatedNote = makeNote();
+        Note requestNote = testDataMaker.makeNote();
+        Note updatedNote = testDataMaker.makeNote();
         updatedNote.setId("1234");
 
         when(noteRepositoryMock.updateByNoteId(updateTargetId, requestNote))
@@ -79,7 +79,7 @@ public class NoteServiceTest extends AbstractTest{
     @Test
     public void getNoteByIdTest_noteFound_returnsNote() {      
         String noteId = "1234";
-        Note foundNote = makeNote();
+        Note foundNote = testDataMaker.makeNote();
         foundNote.setId(noteId);
 
         when(noteRepositoryMock.findByNoteId(noteId))
@@ -105,8 +105,8 @@ public class NoteServiceTest extends AbstractTest{
     public void getAllNotesForOwnerTest_hasNotes_returnsNotes() {
         String noteOwner = "1234";
         List<Note> notes = new ArrayList<>();
-        notes.add(makeNote());
-        notes.add(makeNote());
+        notes.add(testDataMaker.makeNote());
+        notes.add(testDataMaker.makeNote());
 
         when(noteRepositoryMock.findByOwner(noteOwner))
             .thenReturn(notes);

@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
 @RunWith(SpringRunner.class)
 public class NoteRepositoryImplTest extends AbstractTest{
 
@@ -34,7 +33,7 @@ public class NoteRepositoryImplTest extends AbstractTest{
     @Test
     public void findByNoteIdTest_noteFound_returnsOptionalOfNote() {
         String noteId = "1234";
-        Note foundNote = makeNote();
+        Note foundNote = testDataMaker.makeNote();
 
         when(mongoTemplateMock.findById(noteId, Note.class))
             .thenReturn(foundNote);
@@ -55,9 +54,9 @@ public class NoteRepositoryImplTest extends AbstractTest{
     @Test
     public void updateByNoteIdTest_noteExists_updatesNote() {
         String noteId = "1234";
-        Note existingNote = makeNote();
+        Note existingNote = testDataMaker.makeNote();
         existingNote.setId(noteId);
-        Note updatedNote = makeNote();
+        Note updatedNote = testDataMaker.makeNote();
         updatedNote.setId(noteId);
 
         when(mongoTemplateMock.findById(noteId, Note.class))
@@ -71,8 +70,8 @@ public class NoteRepositoryImplTest extends AbstractTest{
     @Test
     public void updateByNoteIdTest_noteDoesNotExist_createsNewNote() {
         String noteId = "1234";
-        Note updatedNote = makeNote();
-        Note newNote = makeNote();
+        Note updatedNote = testDataMaker.makeNote();
+        Note newNote = testDataMaker.makeNote();
         newNote.setId("9876");
 
         when(mongoTemplateMock.findById(noteId, Note.class))

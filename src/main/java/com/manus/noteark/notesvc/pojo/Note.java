@@ -1,5 +1,8 @@
 package com.manus.noteark.notesvc.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Note {
 
     @Id
+    @JsonProperty(access = Access.READ_ONLY)
     private String id;
 
     private String owner;

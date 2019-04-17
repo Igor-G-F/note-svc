@@ -9,17 +9,17 @@ public class TestDataMaker {
         Note result = new Note();
         result.setId(null);
         result.setOwner("5678");
-        result.setTitle("Test title");
-        result.setContent("Test content");
+        result.setTitle("Test note title");
+        result.setContent("Test note content");
         return result;
     }
 
     public NoteRequest makeNoteRequest() {
         NoteRequest result = new NoteRequest();
         result.setOwner("5678");
-        result.setTitle("Test title");
-        result.setContent("Test content");
+        result.setTitle("Test note request title");
+        result.setContent("Test note request content");
         return result;
     }
-    
+
 }

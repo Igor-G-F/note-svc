@@ -18,6 +18,12 @@ public class MongoConfig extends AbstractMongoConfiguration {
     public MongoClient mongoClient() {
         return new MongoClient("localhost", 27017);
     }
+
+    // CONFIG FOR DOCKER
+    // @Override
+    // public MongoClient mongoClient() {
+    //     return new MongoClient("mongodb", 27017);
+    // }
   
     @Override
     protected String getMappingBasePackage() {

@@ -1,7 +1,6 @@
 package com.manus.noteark.notesvc.controller;
 
 import com.manus.noteark.notesvc.pojo.Note;
-import com.manus.noteark.notesvc.pojo.NoteRequest;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +18,7 @@ public class NoteControllerIT extends AbstractIT {
 
   @Test
   public void createNoteTest_validRequest_returns201andCreatedNote() throws Exception {
-    NoteRequest requestBody = testDataMaker.makeNoteRequest();
+    Note requestBody = testDataMaker.makeNote();
 
     mockMvc.perform(post("/note")
             .contentType("application/json")
@@ -35,7 +34,7 @@ public class NoteControllerIT extends AbstractIT {
   public void updateNoteWithIdTest_noteExists_returns200andUpdatedNote() throws Exception {
     Note existingNote = testDataMaker.makeNote();
     existingNote.setId("123456789");
-    NoteRequest requestBody = testDataMaker.makeNoteRequest();
+    Note requestBody = testDataMaker.makeNote();
 
     noteRepository.save(existingNote);
 
@@ -52,7 +51,7 @@ public class NoteControllerIT extends AbstractIT {
   @Test
   public void updateNoteWithIdTest_noteDoesNotExist_returns201andNewNote() throws Exception {
     String invalidNoteId = "123456789";
-    NoteRequest requestBody = testDataMaker.makeNoteRequest();
+    Note requestBody = testDataMaker.makeNote();
 
     mockMvc.perform(put(String.format("/note/%s", invalidNoteId))
             .contentType("application/json")

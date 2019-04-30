@@ -8,6 +8,7 @@ services:
     command: --smallfiles
   app:
     image: com.manus.noteark/note-svc
+    container_name: "note-svc"
     ports:
       - 9090:9090
     links:

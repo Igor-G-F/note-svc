@@ -1,7 +1,7 @@
 package com.manus.noteark.notesvc.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class NoteServiceTest extends AbstractTest{
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    @Before 
+    @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         noteService = new NoteService(noteRepositoryMock);
@@ -77,7 +77,7 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void getNoteByIdTest_noteFound_returnsNote() {      
+    public void getNoteByIdTest_noteFound_returnsNote() {
         String noteId = "1234";
         Note foundNote = testDataMaker.makeNote();
         foundNote.setId(noteId);
@@ -89,7 +89,7 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void getNoteByIdTest_noteNotFound_throwsException() {      
+    public void getNoteByIdTest_noteNotFound_throwsException() {
         String noteId = "1234";
 
         when(noteRepositoryMock.findByNoteId(noteId))
@@ -123,5 +123,32 @@ public class NoteServiceTest extends AbstractTest{
             .thenReturn(notes);
 
         assertEquals(notes, noteService.getAllNotesForOwner(noteOwner));
+    }
+
+    @Test
+    public void deleteNoteWithIdTest_noteFound_deletesNote() {
+        String noteId = "1234";
+        Note foundNote = testDataMaker.makeNote();
+        foundNote.setId(noteId);
+
+        when(noteRepositoryMock.findByNoteId(noteId))
+                .thenReturn(Optional.of(foundNote));
+
+        noteService.deleteNoteWithId(noteId);
+
+        verify(noteRepositoryMock, times(1)).deleteById(noteId);
+    }
+
+    @Test
+    public void deleteNoteWithIdTest_noteNotFound_throwsException() {
+        String noteId = "1234";
+
+        when(noteRepositoryMock.findByNoteId(noteId))
+                .thenReturn(Optional.empty());
+
+        expectedException.expect(NotFoundException.class);
+        expectedException.expectMessage("Could not find \"note\" with id \"1234\"");
+
+        noteService.deleteNoteWithId(noteId);
     }
 }

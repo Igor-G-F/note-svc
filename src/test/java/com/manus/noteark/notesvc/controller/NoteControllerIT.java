@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -82,6 +83,25 @@ public class NoteControllerIT extends AbstractIT {
   @Test
   public void getNoteByIdTest_noteDoesNotExist_returns404() throws Exception {
     mockMvc.perform(get("/note/123456789"))
+            .andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void deleteNoteWithId_noteExists_returns200andDeletesNote() throws Exception {
+    Note existingNote = testDataMaker.makeNote();
+    existingNote.setId("123456789");
+
+    noteRepository.save(existingNote);
+
+    mockMvc.perform(delete(String.format("/note/%s", existingNote.getId())))
+            .andExpect(status().isOk());
+
+    assertFalse(noteRepository.findByNoteId(existingNote.getId()).isPresent());
+  }
+
+  @Test
+  public void deleteNoteWithId_noteDoesNotExist_returns404() throws Exception {
+    mockMvc.perform(delete("/note/123456789"))
             .andExpect(status().isNotFound());
   }
 }

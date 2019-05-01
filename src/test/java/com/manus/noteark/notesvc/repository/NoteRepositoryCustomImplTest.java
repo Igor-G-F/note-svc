@@ -17,17 +17,17 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
-public class NoteRepositoryImplTest extends AbstractTest{
+public class NoteRepositoryCustomImplTest extends AbstractTest{
 
-    @InjectMocks 
-    private NoteRepositoryImpl noteRepositoryImpl;
+    @InjectMocks
+    private NoteRepositoryCustomImpl noteRepositoryCustomImpl;
     @Mock
     private MongoTemplate mongoTemplateMock;
 
-    @Before 
+    @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        noteRepositoryImpl = new NoteRepositoryImpl(mongoTemplateMock);
+        noteRepositoryCustomImpl = new NoteRepositoryCustomImpl(mongoTemplateMock);
     }
 
     @Test
@@ -38,8 +38,8 @@ public class NoteRepositoryImplTest extends AbstractTest{
         when(mongoTemplateMock.findById(noteId, Note.class))
             .thenReturn(foundNote);
 
-        assertEquals(Optional.of(foundNote), noteRepositoryImpl.findByNoteId(noteId));
-    }    
+        assertEquals(Optional.of(foundNote), noteRepositoryCustomImpl.findByNoteId(noteId));
+    }
 
     @Test
     public void findByNoteIdTest_noteNotFound_returnsOptionalEmpty() {
@@ -48,8 +48,8 @@ public class NoteRepositoryImplTest extends AbstractTest{
         when(mongoTemplateMock.findById(noteId, Note.class))
             .thenReturn(null);
 
-        assertEquals(Optional.empty(), noteRepositoryImpl.findByNoteId(noteId));
-    }   
+        assertEquals(Optional.empty(), noteRepositoryCustomImpl.findByNoteId(noteId));
+    }
 
     @Test
     public void updateByNoteIdTest_noteExists_updatesNote() {
@@ -64,8 +64,8 @@ public class NoteRepositoryImplTest extends AbstractTest{
         when(mongoTemplateMock.save(updatedNote))
             .thenReturn(updatedNote);
 
-        assertEquals(Optional.of(updatedNote), noteRepositoryImpl.updateByNoteId(noteId, updatedNote));
-    }    
+        assertEquals(Optional.of(updatedNote), noteRepositoryCustomImpl.updateByNoteId(noteId, updatedNote));
+    }
 
     @Test
     public void updateByNoteIdTest_noteDoesNotExist_createsNewNote() {
@@ -79,6 +79,6 @@ public class NoteRepositoryImplTest extends AbstractTest{
         when(mongoTemplateMock.save(updatedNote))
             .thenReturn(newNote);
 
-        assertEquals(Optional.of(newNote), noteRepositoryImpl.updateByNoteId(noteId, updatedNote));
-    }    
+        assertEquals(Optional.of(newNote), noteRepositoryCustomImpl.updateByNoteId(noteId, updatedNote));
+    }
 }

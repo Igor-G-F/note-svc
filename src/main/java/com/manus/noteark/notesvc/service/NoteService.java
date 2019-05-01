@@ -9,6 +9,8 @@ import com.manus.noteark.notesvc.repository.NoteRepository;
 
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Service
 public class NoteService {
 
@@ -26,12 +28,19 @@ public class NoteService {
         return noteRepository.updateByNoteId(noteId, note).get();
     }
 
-    public Note getNoteById(String noteId) {      
+    public Note getNoteById(String noteId) {
         Optional<Note> result = noteRepository.findByNoteId(noteId);
         if(!result.isPresent()) {
-            throw new NotFoundException(String.format("\"note\" with id \"%s\"", noteId)); 
-        } 
+            throw new NotFoundException(String.format("\"note\" with id \"%s\"", noteId));
+        }
         return result.get();
+    }
+
+    public void deleteNoteWithId(String noteId) {
+        if(!noteRepository.findByNoteId(noteId).isPresent()) {
+            throw new NotFoundException(String.format("\"note\" with id \"%s\"", noteId));
+        }
+        noteRepository.deleteById(noteId);
     }
 
     public List<Note> getAllNotesForOwner(String owner) {

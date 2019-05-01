@@ -7,11 +7,11 @@ import com.manus.noteark.notesvc.pojo.Note;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-public class NoteRepositoryImpl implements NoteRepositoryCustom {
+public class NoteRepositoryCustomImpl implements NoteRepositoryCustom {
 
     private final MongoTemplate mongoTemplate;
 
-    public NoteRepositoryImpl(MongoTemplate mongoTemplate) {
+    public NoteRepositoryCustomImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -20,7 +20,7 @@ public class NoteRepositoryImpl implements NoteRepositoryCustom {
         Note result = mongoTemplate.findById(id, Note.class);
         if(Objects.isNull(result)) {
             return Optional.empty();
-        } 
+        }
         return Optional.of(result);
     }
 

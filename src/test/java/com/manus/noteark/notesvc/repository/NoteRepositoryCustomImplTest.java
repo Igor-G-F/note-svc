@@ -1,6 +1,5 @@
 package com.manus.noteark.notesvc.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -8,15 +7,13 @@ import java.util.Optional;
 import com.manus.noteark.notesvc.AbstractTest;
 import com.manus.noteark.notesvc.pojo.Note;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
-@RunWith(SpringRunner.class)
+
 public class NoteRepositoryCustomImplTest extends AbstractTest{
 
     @InjectMocks
@@ -24,8 +21,7 @@ public class NoteRepositoryCustomImplTest extends AbstractTest{
     @Mock
     private MongoTemplate mongoTemplateMock;
 
-    @Before
-    public void setUp() {
+    public NoteRepositoryCustomImplTest() {
         MockitoAnnotations.initMocks(this);
         noteRepositoryCustomImpl = new NoteRepositoryCustomImpl(mongoTemplateMock);
     }

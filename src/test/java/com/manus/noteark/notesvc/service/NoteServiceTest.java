@@ -1,39 +1,32 @@
 package com.manus.noteark.notesvc.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import com.manus.noteark.notesvc.AbstractTest;
+import com.manus.noteark.notesvc.exception.NotFoundException;
+import com.manus.noteark.notesvc.pojo.Note;
+import com.manus.noteark.notesvc.repository.NoteRepository;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.manus.noteark.notesvc.AbstractTest;
-import com.manus.noteark.notesvc.exception.NotFoundException;
-import com.manus.noteark.notesvc.pojo.Note;
-import com.manus.noteark.notesvc.repository.NoteRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.junit4.SpringRunner;
-
-@RunWith(SpringRunner.class)
 public class NoteServiceTest extends AbstractTest{
 
     @InjectMocks
     private NoteService noteService;
     @Mock
     private NoteRepository noteRepositoryMock;
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
-    @Before
-    public void setUp() {
+    public NoteServiceTest() {
         MockitoAnnotations.initMocks(this);
         noteService = new NoteService(noteRepositoryMock);
     }
@@ -95,10 +88,7 @@ public class NoteServiceTest extends AbstractTest{
         when(noteRepositoryMock.findByNoteId(noteId))
             .thenReturn(Optional.empty());
 
-        expectedException.expect(NotFoundException.class);
-        expectedException.expectMessage("Could not find \"note\" with id \"1234\"");
-
-        noteService.getNoteById(noteId);
+        assertThrows(NotFoundException.class, () -> noteService.getNoteById(noteId));
     }
 
     @Test
@@ -146,9 +136,6 @@ public class NoteServiceTest extends AbstractTest{
         when(noteRepositoryMock.findByNoteId(noteId))
                 .thenReturn(Optional.empty());
 
-        expectedException.expect(NotFoundException.class);
-        expectedException.expectMessage("Could not find \"note\" with id \"1234\"");
-
-        noteService.deleteNoteWithId(noteId);
+        assertThrows(NotFoundException.class, () -> noteService.deleteNoteWithId(noteId));
     }
 }

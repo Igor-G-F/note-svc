@@ -8,7 +8,6 @@ import com.manus.noteark.notesvc.AbstractTest;
 import com.manus.noteark.notesvc.pojo.Note;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,8 +21,7 @@ public class NoteRepositoryCustomImplTest extends AbstractTest{
     @Mock
     private MongoTemplate mongoTemplateMock;
 
-    @BeforeEach
-    public void setUp() {
+    public NoteRepositoryCustomImplTest() {
         MockitoAnnotations.initMocks(this);
         noteRepositoryCustomImpl = new NoteRepositoryCustomImpl(mongoTemplateMock);
     }

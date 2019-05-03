@@ -1,23 +1,23 @@
 package com.manus.noteark.notesvc.service;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import com.manus.noteark.notesvc.AbstractTest;
+import com.manus.noteark.notesvc.exception.NotFoundException;
+import com.manus.noteark.notesvc.pojo.Note;
+import com.manus.noteark.notesvc.repository.NoteRepository;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.manus.noteark.notesvc.AbstractTest;
-import com.manus.noteark.notesvc.exception.NotFoundException;
-import com.manus.noteark.notesvc.pojo.Note;
-import com.manus.noteark.notesvc.repository.NoteRepository;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 public class NoteServiceTest extends AbstractTest{
 
@@ -26,8 +26,7 @@ public class NoteServiceTest extends AbstractTest{
     @Mock
     private NoteRepository noteRepositoryMock;
 
-    @BeforeAll
-    public void setUp() {
+    public NoteServiceTest() {
         MockitoAnnotations.initMocks(this);
         noteService = new NoteService(noteRepositoryMock);
     }
@@ -89,9 +88,7 @@ public class NoteServiceTest extends AbstractTest{
         when(noteRepositoryMock.findByNoteId(noteId))
             .thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> {
-            noteService.getNoteById(noteId);
-        });
+        assertThrows(NotFoundException.class, () -> noteService.getNoteById(noteId));
     }
 
     @Test
@@ -139,8 +136,6 @@ public class NoteServiceTest extends AbstractTest{
         when(noteRepositoryMock.findByNoteId(noteId))
                 .thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> {
-            noteService.deleteNoteWithId(noteId);
-        });
+        assertThrows(NotFoundException.class, () -> noteService.deleteNoteWithId(noteId));
     }
 }

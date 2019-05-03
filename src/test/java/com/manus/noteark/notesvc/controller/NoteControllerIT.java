@@ -2,19 +2,15 @@ package com.manus.noteark.notesvc.controller;
 
 import com.manus.noteark.notesvc.pojo.Note;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.assertFalse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
 
-@RunWith(SpringRunner.class)
 public class NoteControllerIT extends AbstractIT {
 
   @Test

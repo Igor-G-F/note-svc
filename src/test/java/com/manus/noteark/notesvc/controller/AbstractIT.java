@@ -5,7 +5,7 @@ import com.manus.noteark.notesvc.AbstractTest;
 import com.manus.noteark.notesvc.NoteSvcApplication;
 import com.manus.noteark.notesvc.repository.NoteRepository;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +26,7 @@ public class AbstractIT extends AbstractTest {
   @Autowired
   public NoteRepository noteRepository;
 
-  @Before
+  @BeforeEach
   public void clearNotes () {
     noteRepository.deleteAll();
   }

@@ -17,14 +17,6 @@ public class Note {
     private String title;
     private String content;
 
-    public Note() {}
-
-    public Note(String owner, String title, String content) {
-        setOwner(owner);
-        setTitle(title);
-        setContent(content);
-    }
-
     public void setId(String id) {
         this.id = id;
     }

@@ -1,20 +1,20 @@
 # note-svc
 Note management service, exposes storage, retrieval and management of notes.
 
-## Table of contents
+## Table of Contents
 
 - [requirements](#requirements)
 - [endpoints](#endpoints)
 - [quick start](#quick-start)
 
 
-## requirements
+## Requirements
 - mvn 3.6.0
 - java 8
 - mongodb
 - docker
 
-## endpoints
+## Endpoints
 
 This project uses [Swagger](https://swagger.io/) for API documentation. To see the the documentation, start the service (see 
 [quick start](#quick-start)) and visit the following url: 
@@ -22,30 +22,30 @@ This project uses [Swagger](https://swagger.io/) for API documentation. To see t
 http://localhost:9090/note-svc/swagger-ui.html#/
 ```
 
-## quick start
+## Quick Start
 
-#####Start service(requires mongo already running)
+### Start Service(requires mongo already running)
 ```
 mvn clean install
 mvn spring-boot:run
 ```
 
-#####Skip all tests
+### Skip All Tests
 ```
 mvn clean verify -DskipTests=true
 ```
 
-#####Skip integration tests
+### Skip Integration Tests
 ```
 mvn clean verify -DskipITs=true
 ```
 
-#####Skip mutation tests
+### Skip Mutation Tests
 ```
 mvn clean verify -DskipPITs=true
 ```
 
-#####Set environment
+### Set Environment
 ```
 mvn spring-boot:run -Dspring.profiles.active=local
 ```

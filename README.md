@@ -24,10 +24,21 @@ http://localhost:9090/note-svc/swagger-ui.html#/
 
 ## Quick Start
 
-### Start Service(requires mongo already running)
+### Start Service with Dependencies
+```
+mvn clean install
+docker-compose up -d
+```
+
+### Start Service Locally(requires mongo already running)
 ```
 mvn clean install
 mvn spring-boot:run
+```
+
+### Select Environment
+```
+mvn spring-boot:run -Dspring.profiles.active=local
 ```
 
 ### Skip All Tests
@@ -44,9 +55,3 @@ mvn clean verify -DskipITs=true
 ```
 mvn clean verify -DskipPITs=true
 ```
-
-### Set Environment
-```
-mvn spring-boot:run -Dspring.profiles.active=local
-```
-

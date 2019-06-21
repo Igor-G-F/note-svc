@@ -16,7 +16,7 @@ public class OwnerControllerIT extends AbstractIT {
 
   @Test
   public void getAllNotesForOwnerTest_ownerExists_returns200andCreatedNote() throws Exception {
-    Note existingNote = testDataMaker.makeNote();
+    Note existingNote = getNote("existing_note.json");
 
     noteRepository.save(existingNote);
     noteRepository.save(existingNote);

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,14 +29,13 @@ public class NoteRepositoryCustomImplTest extends AbstractTest {
     }
 
     @Test
-    public void findByNoteIdTest_noteFound_returnsOptionalOfNote() {
-        String noteId = "1234";
-        Note foundNote = testDataMaker.makeNote();
+    public void findByNoteIdTest_noteFound_returnsOptionalOfNote() throws IOException {
+        Note foundNote = getNote("existing_note.json");
 
-        when(mongoTemplateMock.findById(noteId, Note.class))
+        when(mongoTemplateMock.findById(foundNote.getId(), Note.class))
                 .thenReturn(foundNote);
 
-        assertEquals(Optional.of(foundNote), noteRepositoryCustomImpl.findByNoteId(noteId));
+        assertEquals(Optional.of(foundNote), noteRepositoryCustomImpl.findByNoteId(foundNote.getId()));
     }
 
     @Test
@@ -49,21 +49,21 @@ public class NoteRepositoryCustomImplTest extends AbstractTest {
     }
 
     @Test
-    public void updateByNoteIdTest_noteExists_updatesNote() {
-        String noteId = "1234";
-        Note requestNote = testDataMaker.makeNote();
-        Note existingNote = testDataMaker.makeNote();
-        existingNote.setId(noteId);
-        Note updatedNote = testDataMaker.makeNote();
-        updatedNote.setId(noteId);
+    public void updateByNoteIdTest_noteExists_updatesNote() throws IOException {
+        Note requestNote = getNote("new_note.json");
+        requestNote.setContent("Hello There");
+        Note existingNote = getNote("existing_note.json");
+        Note updatedNote = getNote("new_note.json");
+        updatedNote.setContent("Hello There");
+        updatedNote.setId(existingNote.getId());
 
-        when(mongoTemplateMock.findById(noteId, Note.class))
+        when(mongoTemplateMock.findById(existingNote.getId(), Note.class))
                 .thenReturn(existingNote);
         when(mongoTemplateMock.save(any(Note.class)))
                 .thenReturn(updatedNote);
 
         ArgumentCaptor savedNoteCaptor = ArgumentCaptor.forClass(Note.class);
-        Optional<Note> returnedNote = noteRepositoryCustomImpl.updateByNoteId(noteId, requestNote);
+        Optional<Note> returnedNote = noteRepositoryCustomImpl.updateByNoteId(existingNote.getId(), requestNote);
 
         assertEquals(Optional.of(updatedNote), returnedNote);
         verify(mongoTemplateMock, times(1)).save(savedNoteCaptor.capture());
@@ -75,10 +75,10 @@ public class NoteRepositoryCustomImplTest extends AbstractTest {
     }
 
     @Test
-    public void updateByNoteIdTest_noteDoesNotExist_createsNewNote() {
+    public void updateByNoteIdTest_noteDoesNotExist_createsNewNote() throws IOException {
         String noteId = "1234";
-        Note updatedNote = testDataMaker.makeNote();
-        Note newNote = testDataMaker.makeNote();
+        Note updatedNote = getNote("new_note.json");
+        Note newNote = getNote("new_note.json");
         newNote.setId("9876");
 
         when(mongoTemplateMock.findById(noteId, Note.class))

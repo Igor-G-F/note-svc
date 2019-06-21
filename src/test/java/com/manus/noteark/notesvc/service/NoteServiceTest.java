@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,10 +33,9 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void createNoteTest_returnsCreatedNote() {
-        Note requestNote = testDataMaker.makeNote();
-        Note createdNote = testDataMaker.makeNote();
-        createdNote.setId("1234");
+    public void createNoteTest_returnsCreatedNote() throws IOException {
+        Note requestNote = getNote("new_note.json");
+        Note createdNote = getNote("existing_note.json");
 
         when(noteRepositoryMock.save(requestNote))
             .thenReturn(createdNote);
@@ -44,10 +44,10 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void updateNoteWithIdTest_noteExists_returnsUpdatedNote() {
+    public void updateNoteWithIdTest_noteExists_returnsUpdatedNote() throws IOException {
         String updateTargetId = "1234";
-        Note requestNote = testDataMaker.makeNote();
-        Note updatedNote = testDataMaker.makeNote();
+        Note requestNote = getNote("new_note.json");
+        Note updatedNote = getNote("new_note.json");
         updatedNote.setId("1234");
 
         when(noteRepositoryMock.updateByNoteId(updateTargetId, requestNote))
@@ -57,28 +57,25 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void updateNoteWithIdTest_noteDoesNotExist_returnsNewNote() {
+    public void updateNoteWithIdTest_noteDoesNotExist_returnsNewNote() throws IOException {
         String updateTargetId = "2345";
-        Note requestNote = testDataMaker.makeNote();
-        Note updatedNote = testDataMaker.makeNote();
-        updatedNote.setId("1234");
+        Note requestNote = getNote("new_note.json");
+        Note createdNote = getNote("existing_note.json");
 
         when(noteRepositoryMock.updateByNoteId(updateTargetId, requestNote))
-            .thenReturn(Optional.of(updatedNote));
+            .thenReturn(Optional.of(createdNote));
 
-        assertEquals(updatedNote, noteService.updateNoteWithId(updateTargetId, requestNote));
+        assertEquals(createdNote, noteService.updateNoteWithId(updateTargetId, requestNote));
     }
 
     @Test
-    public void getNoteByIdTest_noteFound_returnsNote() {
-        String noteId = "1234";
-        Note foundNote = testDataMaker.makeNote();
-        foundNote.setId(noteId);
+    public void getNoteByIdTest_noteFound_returnsNote() throws IOException {
+        Note existingNote = getNote("existing_note.json");
 
-        when(noteRepositoryMock.findByNoteId(noteId))
-            .thenReturn(Optional.of(foundNote));
+        when(noteRepositoryMock.findByNoteId(existingNote.getId()))
+            .thenReturn(Optional.of(existingNote));
 
-        assertEquals(foundNote, noteService.getNoteById(noteId));
+        assertEquals(existingNote, noteService.getNoteById(existingNote.getId()));
     }
 
     @Test
@@ -92,16 +89,16 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void getAllNotesForOwnerTest_hasNotes_returnsNotes() {
-        String noteOwner = "1234";
+    public void getAllNotesForOwnerTest_hasNotes_returnsNotes() throws IOException {
+        Note note = getNote("existing_note.json");
         List<Note> notes = new ArrayList<>();
-        notes.add(testDataMaker.makeNote());
-        notes.add(testDataMaker.makeNote());
+        notes.add(note);
+        notes.add(note);
 
-        when(noteRepositoryMock.findByOwner(noteOwner))
+        when(noteRepositoryMock.findByOwner(note.getOwner()))
             .thenReturn(notes);
 
-        assertEquals(notes, noteService.getAllNotesForOwner(noteOwner));
+        assertEquals(notes, noteService.getAllNotesForOwner(note.getOwner()));
     }
 
     @Test
@@ -116,17 +113,15 @@ public class NoteServiceTest extends AbstractTest{
     }
 
     @Test
-    public void deleteNoteWithIdTest_noteFound_deletesNote() {
-        String noteId = "1234";
-        Note foundNote = testDataMaker.makeNote();
-        foundNote.setId(noteId);
+    public void deleteNoteWithIdTest_noteFound_deletesNote() throws IOException {
+        Note existingNote = getNote("existing_note.json");
 
-        when(noteRepositoryMock.findByNoteId(noteId))
-                .thenReturn(Optional.of(foundNote));
+        when(noteRepositoryMock.findByNoteId(existingNote.getId()))
+                .thenReturn(Optional.of(existingNote));
 
-        noteService.deleteNoteWithId(noteId);
+        noteService.deleteNoteWithId(existingNote.getId());
 
-        verify(noteRepositoryMock, times(1)).deleteById(noteId);
+        verify(noteRepositoryMock, times(1)).deleteById(existingNote.getId());
     }
 
     @Test

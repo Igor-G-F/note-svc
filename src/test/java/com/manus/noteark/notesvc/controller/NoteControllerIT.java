@@ -15,7 +15,7 @@ public class NoteControllerIT extends AbstractIT {
 
   @Test
   public void createNoteTest_validRequest_returns201andCreatedNote() throws Exception {
-    Note requestBody = testDataMaker.makeNote();
+    Note requestBody = getNote("new_note.json");
 
     mockMvc.perform(post("/note")
             .contentType("application/json")
@@ -29,9 +29,9 @@ public class NoteControllerIT extends AbstractIT {
 
   @Test
   public void updateNoteWithIdTest_noteExists_returns200andUpdatedNote() throws Exception {
-    Note existingNote = testDataMaker.makeNote();
+    Note existingNote = getNote("existing_note.json");
     existingNote.setId("123456789");
-    Note requestBody = testDataMaker.makeNote();
+    Note requestBody = getNote("existing_note.json");
 
     noteRepository.save(existingNote);
 
@@ -48,7 +48,7 @@ public class NoteControllerIT extends AbstractIT {
   @Test
   public void updateNoteWithIdTest_noteDoesNotExist_returns201andNewNote() throws Exception {
     String invalidNoteId = "123456789";
-    Note requestBody = testDataMaker.makeNote();
+    Note requestBody = getNote("new_note.json");
 
     mockMvc.perform(put(String.format("/note/%s", invalidNoteId))
             .contentType("application/json")
@@ -63,8 +63,7 @@ public class NoteControllerIT extends AbstractIT {
 
   @Test
   public void getNoteByIdTest_noteExists_returns200andFoundNote() throws Exception {
-    Note existingNote = testDataMaker.makeNote();
-    existingNote.setId("123456789");
+    Note existingNote = getNote("existing_note.json");
 
     noteRepository.save(existingNote);
 
@@ -84,8 +83,7 @@ public class NoteControllerIT extends AbstractIT {
 
   @Test
   public void deleteNoteWithId_noteExists_returns200andDeletesNote() throws Exception {
-    Note existingNote = testDataMaker.makeNote();
-    existingNote.setId("123456789");
+    Note existingNote = getNote("existing_note.json");
 
     noteRepository.save(existingNote);
 
